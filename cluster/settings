@@ -1,9 +1,9 @@
 # Google Cloud settings
 # project
-PROJECT=replace_with_your_project
+PROJECT=tiger-team-testing
 
 # your cluster region and zones
-REGION=europe-west1
+REGION=us-east1
 ZONES=(b c d)
 #
 
@@ -24,7 +24,7 @@ MACHINE_TYPE=n1-standard-2
 DISK_TYPE=pd-ssd
 
 # image
-IMAGE=$(gcloud compute images list | grep -v grep | grep ubuntu-1604 | awk {'print $1'})
+IMAGE=$(gcloud compute images list | grep -v grep | grep centos-7 | awk {'print $1'})
 
 # count
 COUNT=3
