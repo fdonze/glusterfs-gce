@@ -74,6 +74,9 @@ Expose the heketi REST interface
 ```
 $ kubectl create -f heketi-endpoint.yaml
 ```
+**NOTE** that the service created a load balancer and made the port 8080 opened for access to all sources. 
+The firewall rule created for port 8080 should be restricted to the GKE cluster master node(s) only.
+
 
 Get the heketi service EXTERNAL-IP
 
