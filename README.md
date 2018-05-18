@@ -36,17 +36,6 @@ Each server will have:
 * The GlusterFS server package installed
 * A Google Cloud persistent disk to be used as a GlusterFS *brick*, that is: storage space made available to the cluster
 
-### Create volumes
-
-A GlusterFS *volume* is a collection of bricks. A volume can store data across the bricks in three basic ways: distributed, striped, or replicated.
-
-With the script below you will be able to create GFS replicated volumes on all three servers automaticly:
-
-```
-$ cd ..
-$ ./create_volume.sh VOLUME_NAME
-```
-
 ##### At this point, your GlusterFS cluster should be fully set up and operational
 
 You can check Kubernetes GlusterFS [example](https://github.com/kubernetes/kubernetes/tree/master/examples/volumes/glusterfs) how to use GlusterFS with Kubernetes.
@@ -54,13 +43,52 @@ You can check Kubernetes GlusterFS [example](https://github.com/kubernetes/kuber
 
 ### Heketi Extras
 
+See `https://github.com/gluster/gluster-kubernetes` for information about installing the Heketi RESTful volume management interface for GlusterFS.
 
 * `cluster/cluster_topology.sh	` - output  topology json content to be used during heketi installation
 * `install_heketi.sh ` - heketi installer helper
+* `glusterfs-storage-class.yaml ` - glusterfs storage class template
+* `heketi-endpoint.yaml ` - expose the heketi REST end point via a load balancer. This endpoint can then be used in the storage class definition.
 
-### Delete the cluster
+#### Heketi installation
+
+Generate the heketi topology json file
+
+```
+$ ./cluster_topology.sh > topology.json
+
+```
+
+Clone the `https://github.com/gluster/gluster-kubernetes` repository. The heketi installation script `gk-deploy` is under the `gluster-kubernetes/deploy` directory.
+Use the `install_heketi.sh` helper script to install heketi REST endpoint in the current namespace.
+
+```
+$ ./install_heketi.sh PATH_TO_TOPOLOGY_JSON DIRECTORY_HEKETI_GK_DEPLOY_SCRIPT -s YOUR_GOOGLE_GLUSTERFS_INSTANCE_SSH_KEY -v --ssh-user YOUR_GOOGLE_USERNAME
+ 
+```
+
+Expose the heketi REST interface
+
+```
+$ kubectl create -f heketi-endpoint.yaml
+```
+
+Get the heketi service EXTERNAL-IP
+
+```
+$ kubectl get svc heketi-endpoint
+```
+
+Edit the `gluster-storage-class.yaml` and replace the `<HEKETI_SERVICE_EXTERNAL_IP>` with the EXTERNAL_IP.
+Then create the storage class.
+
+```
+$ kubectl create -f gluster-storage-class.yamll
+```
+
+## Delete the cluster
 ```
 $ ./delete_cluster.sh
 ```
-This command will delete the whole cluster.
+This command will delete the whole GlusterFS cluster (nodes and disks).
 

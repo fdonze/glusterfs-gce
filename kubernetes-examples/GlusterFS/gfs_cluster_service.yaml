@@ -1,9 +1,0 @@
-  kind: "Service"
-  apiVersion: "v1"
-  metadata: 
-    name: "gfs-cluster1"
-  spec: 
-    ports: 
-      -
-        port: 1
-
