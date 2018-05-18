@@ -1,6 +1,6 @@
 # Google Cloud settings
 # project
-PROJECT=tiger-team-testing
+PROJECT=<YOUR_PROJECT_NAME>
 
 # your cluster region and zones
 REGION=us-east1

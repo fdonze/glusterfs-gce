@@ -19,7 +19,7 @@ Before continuing, please make sure you have:
 
 ### Clone this project and set settings:
 ````
-$ git clone https://github.com/rimusz/glusterfs-gce
+$ git clone https://github.com/fdonze/glusterfs-gce
 $ cd glusterfs-gce/cluster
 ````
 * Edit the `cluster/settings` file and set `PROJECT, REGION and ZONES`, the rest of settings in this file are probably fine, but can be adjusted if need be.
@@ -52,13 +52,11 @@ $ ./create_volume.sh VOLUME_NAME
 You can check Kubernetes GlusterFS [example](https://github.com/kubernetes/kubernetes/tree/master/examples/volumes/glusterfs) how to use GlusterFS with Kubernetes.
 
 
-### Extras
+### Heketi Extras
 
-In `cluster` folder there are two more scripts:
 
-* `upgrade_glusterfs.sh	` - allows to upgrade GlusterFS server package on all servers
-* `upgrade_servers.sh` - runs `apt-get update && apt-get upgrade` on all servers
-
+* `cluster/cluster_topology.sh	` - output  topology json content to be used during heketi installation
+* `install_heketi.sh ` - heketi installer helper
 
 ### Delete the cluster
 ```
