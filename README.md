@@ -36,23 +36,25 @@ Each server will have:
 * The GlusterFS server package installed
 * A Google Cloud persistent disk to be used as a GlusterFS *brick*, that is: storage space made available to the cluster
 
-##### At this point, your GlusterFS cluster should be fully set up and operational
+## Install a GlusterFS management interface in GKE
 
-You can check Kubernetes GlusterFS [example](https://github.com/kubernetes/kubernetes/tree/master/examples/volumes/glusterfs) how to use GlusterFS with Kubernetes.
+In order to use the GlusterFS cluster just created from a GKE cluster, a GlusterFS management interface and a storage class need to be created.
+The management interface can be created by installing the Heketi RESTful volume management interface for GlusterFS.
 
+See `https://github.com/gluster/gluster-kubernetes` for information about the Heketi RESTful volume management interface for GlusterFS.
 
 ### Heketi Extras
 
-See `https://github.com/gluster/gluster-kubernetes` for information about installing the Heketi RESTful volume management interface for GlusterFS.
+Here are a few helpers for the installation of Heketi.
 
 * `cluster/cluster_topology.sh	` - output  topology json content to be used during heketi installation
 * `install_heketi.sh ` - heketi installer helper
 * `glusterfs-storage-class.yaml ` - glusterfs storage class template
 * `heketi-endpoint.yaml ` - expose the heketi REST end point via a load balancer. This endpoint can then be used in the storage class definition.
 
-#### Heketi installation
+### Heketi installation in a GKE cluster
 
-Generate the heketi topology json file
+Generate the GlusterFS topology json file needed by the Heketi management interface.
 
 ```
 $ ./cluster_topology.sh > topology.json
@@ -60,7 +62,7 @@ $ ./cluster_topology.sh > topology.json
 ```
 
 Clone the `https://github.com/gluster/gluster-kubernetes` repository. The heketi installation script `gk-deploy` is under the `gluster-kubernetes/deploy` directory.
-Use the `install_heketi.sh` helper script to install heketi REST endpoint in the current namespace.
+Use the `install_heketi.sh` helper script to install heketi REST endpoint in the current namespace of your GKE cluster.
 
 ```
 $ ./install_heketi.sh PATH_TO_TOPOLOGY_JSON DIRECTORY_HEKETI_GK_DEPLOY_SCRIPT -s YOUR_GOOGLE_GLUSTERFS_INSTANCE_SSH_KEY -v --ssh-user YOUR_GOOGLE_USERNAME
